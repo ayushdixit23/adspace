@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { usePathname } from 'next/navigation';
 import Loader from '@/app/components/Loader';
+import Cookies from 'js-cookie';
 
 const Getuser = () => {
   const dispatch = useDispatch();
@@ -16,8 +17,11 @@ const Getuser = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        const token = Cookies.get("auth")
         const response = await axios.get(`${serverUrl}/api/v1/user/me`, {
-          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
         });
 
         if (response.data.success) {
