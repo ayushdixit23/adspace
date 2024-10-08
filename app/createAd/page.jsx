@@ -48,7 +48,10 @@ const page = () => {
 
   const fetchCommunity = async () => {
     try {
-      const res = await axios.get(`${serverUrl}/api/v1/ads/communities`, { withCredentials: true })
+      const res = await axios.get(`${serverUrl}/api/v1/ads/communities`, {  headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true })
       console.log(res.data)
       if (res.data.success) {
         setCommunities(res.data?.communitywithDps)

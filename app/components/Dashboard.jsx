@@ -9,6 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { DropdownMenuCheckboxes } from './adFilterDropDown';
 import Link from 'next/link';
 import { serverUrl } from '@/config';
+import Cookies from 'js-cookie';
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
@@ -75,6 +76,8 @@ const Dashboard = () => {
     setLoading(true);
 
     try {
+const token = Cookies.get("auth")
+
       const params = {
         endDate: endDate.toISOString(),
         campaignOptions,
@@ -87,7 +90,11 @@ const Dashboard = () => {
         `${serverUrl}/api/v1/ads/ad-stats`,
         {
           params,
-          withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data',
+            },
+            withCredentials: true,
         }
       );
 
@@ -119,7 +126,11 @@ const Dashboard = () => {
       const response = await axios.put(
         `${serverUrl}/api/v1/ads/updateAd/${id}/${newStatus}/${actualStatus}`,
         {},
-        { withCredentials: true }
+        { headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true, }
       );
 
       if (response.status === 200) {

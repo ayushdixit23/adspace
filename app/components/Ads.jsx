@@ -9,6 +9,7 @@ import DateModal from './DateModal';
 import { Switch } from '@/components/ui/switch';
 import { serverUrl } from '@/config';
 import toast from 'react-hot-toast';
+import Cookies from 'js-cookie';
 const Ads = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [startDate, setStartDate] = useState(null);
@@ -41,6 +42,8 @@ const Ads = () => {
   const fetchData = async () => {
 
     try {
+
+      const token = Cookies.get("auth")
       const params = {
         endDate: endDate.toISOString(),
         campaignOptions,
@@ -53,7 +56,12 @@ const Ads = () => {
         `${process.env.NEXT_PUBLIC_SERVER}/api/v1/ads/ad-stats`,
         {
           params,
-          withCredentials: true,
+          
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            withCredentials: true,
+   
         }
       );
 
@@ -69,11 +77,17 @@ const Ads = () => {
 
   const handleToggle = async (id, status,actualStatus) => {
     try {
+      const token = Cookies.get("auth")
       const newStatus = !status; // Toggle the status
       const response = await axios.put(
         `${serverUrl}/api/v1/ads/updateAd/${id}/${newStatus}/${actualStatus}`,
         {},
-        { withCredentials: true }
+        {  
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
       );
 
       if (response.status === 200) {

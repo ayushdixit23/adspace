@@ -2,6 +2,7 @@
 import { Input } from '@/components/ui/input';
 import { serverUrl } from '@/config';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -21,10 +22,17 @@ const AddMoneyModal = ({ setAddMoneyModalOpen }) => {
     }
 
     try {
+      const token = Cookies.get('auth');
+
       const response = await axios.post(
         `${serverUrl}/api/v1/transactions/addMoney`,
         { amount: parsedAmount },
-        { withCredentials: true }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
       );
 
       const data = response.data;
@@ -66,27 +74,20 @@ const AddMoneyModal = ({ setAddMoneyModalOpen }) => {
 
         {error && <div className="text-red-500 text-xs mb-2">{error}</div>}
 
-        <div className='flex justify-center items-center gap-2 '>
-
-
-        <button
-          className="text-gray-400 border border-gray-400 rounded-[10px] w-full text-center p-2 text-[12px]"
-          onClick={() => setAddMoneyModalOpen(false)}
-        >
-          Cancel
-        </button>
-        <button
-          className="text-white bg-[#2D9AFF] rounded-[10px] w-full text-center p-2 text-[12px]"
-          onClick={handleAddMoney}
-        >
-          Add Money
-        </button>
-
-       
-
+        <div className="flex justify-center items-center gap-2 ">
+          <button
+            className="text-gray-400 border border-gray-400 rounded-[10px] w-full text-center p-2 text-[12px]"
+            onClick={() => setAddMoneyModalOpen(false)}
+          >
+            Cancel
+          </button>
+          <button
+            className="text-white bg-[#2D9AFF] rounded-[10px] w-full text-center p-2 text-[12px]"
+            onClick={handleAddMoney}
+          >
+            Add Money
+          </button>
         </div>
-
-        
       </div>
     </div>
   );

@@ -56,7 +56,11 @@ const Wallet = () => {
         `${serverUrl}/api/v1/transactions/get-wallet`,
         {
           params,
-          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          withCredentials: true
         }
       );
       console.log(response.data)

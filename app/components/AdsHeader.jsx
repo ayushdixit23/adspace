@@ -1,6 +1,7 @@
 'use client';
 import { serverUrl } from '@/config';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
@@ -10,6 +11,9 @@ const AdsHeader = ({ formData, communities }) => {
 
   const handleCreateAd = async () => {
     try {
+
+      const token = Cookies.get("auth")
+
       const formDataToUpload = new FormData();
 
       formDataToUpload.append('community', formData.community);
@@ -45,22 +49,24 @@ const AdsHeader = ({ formData, communities }) => {
         response = await axios.post(
           `${serverUrl}/api/v1/ads/new`,
           formDataToUpload,
-          {
-            withCredentials: true,
+          {  
             headers: {
+              Authorization: `Bearer ${token}`,
               'Content-Type': 'multipart/form-data',
             },
+            withCredentials: true,
           }
         );
       } else {
         response = await axios.post(
           `${serverUrl}/api/v1/ads/createAdwithCommunity`,
           formDataToUpload,
-          {
-            withCredentials: true,
+          {  
             headers: {
+              Authorization: `Bearer ${token}`,
               'Content-Type': 'multipart/form-data',
             },
+            withCredentials: true,
           }
         );
       }

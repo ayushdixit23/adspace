@@ -10,8 +10,6 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { MdOutlineLogout } from 'react-icons/md';
 import Cookies from "js-cookie";
-import axios from 'axios';
-import { serverUrl } from '@/config';
 import toast from 'react-hot-toast';
 
 const Navbar = () => {
