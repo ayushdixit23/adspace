@@ -10,6 +10,7 @@ import moment from 'moment';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import DateModal from './DateModal';
 import { serverUrl } from '@/config';
+import Cookies from 'js-cookie';
 
 const Wallet = () => {
   const [states, setStates] = useState({
@@ -44,6 +45,7 @@ const Wallet = () => {
 
   const fetchWalletData = async () => {
     try {
+      const token = Cookies.get("auth")
       const params = {};
       if (dates.start) {
         params.start = dates.start.toISOString();
