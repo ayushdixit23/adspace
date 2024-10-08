@@ -1,1 +1,1 @@
-export const serverUrl = "http://localhost:5001";
+export const serverUrl = "https://adsserver.grovyo.xyz";
